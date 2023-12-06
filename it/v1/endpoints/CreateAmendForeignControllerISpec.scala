@@ -397,7 +397,7 @@ class CreateAmendForeignControllerISpec extends IntegrationBaseSpec {
 
     val nino: String          = "AA123456A"
     val correlationId: String = "X-123"
-    def uri: String           = s"/foreign/$nino/$taxYear"
+    def uri: String           = s"/$nino/$taxYear"
 
     def taxYear: String
     def downstreamUri: String

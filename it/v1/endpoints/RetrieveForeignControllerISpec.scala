@@ -146,7 +146,7 @@ class RetrieveForeignControllerISpec extends IntegrationBaseSpec {
     val downstreamResponse: JsValue = RetrieveForeignFixture.fullRetrieveForeignResponseJson
     val mtdResponse: JsValue        = RetrieveForeignFixture.fullRetrieveForeignResponseJson
 
-    def uri: String = s"/foreign/$nino/$taxYear"
+    def uri: String = s"/$nino/$taxYear"
 
     def setupStubs(): StubMapping
 
