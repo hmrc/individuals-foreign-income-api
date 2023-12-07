@@ -23,12 +23,12 @@ import v1.models.request.createAmend.{CreateAmendForeignRawData, CreateAmendFore
 
 trait MockCreateAmendForeignRequestParser extends MockFactory {
 
-  val mockAmendForeignRequestParser: CreateAmendForeignRequestParser = mock[CreateAmendForeignRequestParser]
+  val mockCreateAmendForeignRequestParser: CreateAmendForeignRequestParser = mock[CreateAmendForeignRequestParser]
 
-  object MockAmendForeignRequestParser {
+  object MockedCreateAmendForeignRequestParser {
 
     def parse(data: CreateAmendForeignRawData): CallHandler[Either[ErrorWrapper, CreateAmendForeignRequest]] = {
-      (mockAmendForeignRequestParser.parseRequest(_: CreateAmendForeignRawData)(_: String)).expects(data, *)
+      (mockCreateAmendForeignRequestParser.parseRequest(_: CreateAmendForeignRawData)(_: String)).expects(data, *)
     }
 
   }

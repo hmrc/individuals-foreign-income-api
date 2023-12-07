@@ -99,7 +99,7 @@ class CreateAmendForeignControllerSpec
   "AmendForeignController" should {
     "return a successful response with status 200 (OK)" when {
       "the request received is valid" in new Test {
-        MockAmendForeignRequestParser
+          MockedCreateAmendForeignRequestParser
           .parse(rawData)
           .returns(Right(requestData))
 
@@ -116,7 +116,7 @@ class CreateAmendForeignControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockAmendForeignRequestParser
+          MockedCreateAmendForeignRequestParser
           .parse(rawData)
           .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
 
@@ -124,7 +124,7 @@ class CreateAmendForeignControllerSpec
       }
 
       "the service returns an error" in new Test {
-        MockAmendForeignRequestParser
+          MockedCreateAmendForeignRequestParser
           .parse(rawData)
           .returns(Right(requestData))
 
@@ -142,8 +142,8 @@ class CreateAmendForeignControllerSpec
     val controller = new CreateAmendForeignController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockAmendForeignRequestParser,
-      service = mockAmendForeignService,
+      parser = mockCreateAmendForeignRequestParser,
+      service = mockCreateAmendForeignService,
       auditService = mockAuditService,
       cc = cc,
       idGenerator = mockIdGenerator

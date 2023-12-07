@@ -17,9 +17,9 @@
 package v1.connectors
 
 import config.AppConfig
-import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import shared.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
+import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v1.models.request.createAmend.CreateAmendForeignRequest
 
@@ -29,8 +29,10 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class CreateAmendForeignConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
-  def amendForeign(
-      request: CreateAmendForeignRequest)(implicit hc: HeaderCarrier, ec: ExecutionContext, correlationId: String): Future[DownstreamOutcome[Unit]] = {
+  def amendForeign(request: CreateAmendForeignRequest)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
     import request._
 
@@ -42,7 +44,7 @@ class CreateAmendForeignConnector @Inject() (val http: HttpClient, val appConfig
       IfsUri[Unit](s"income-tax/income/foreign/$nino/${taxYear.asMtd}")
     }
 
-    put(request.body, downstreamUri)
+    put(body, downstreamUri)
   }
 
 }

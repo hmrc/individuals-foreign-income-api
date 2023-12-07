@@ -23,12 +23,12 @@ import v1.models.request.createAmend.CreateAmendForeignRawData
 
 trait MockCreateAmendForeignValidator extends MockFactory {
 
-  val mockAmendForeignValidator: CreateAmendForeignValidator = mock[CreateAmendForeignValidator]
+  val mockCreateAmendForeignValidator: CreateAmendForeignValidator = mock[CreateAmendForeignValidator]
 
   object MockedCreateAmendForeignValidator {
 
     def validate(data: CreateAmendForeignRawData): CallHandler1[CreateAmendForeignRawData, Seq[MtdError]] =
-      (mockAmendForeignValidator
+      (mockCreateAmendForeignValidator
         .validate(_: CreateAmendForeignRawData))
         .expects(data)
 

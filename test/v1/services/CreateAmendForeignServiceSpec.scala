@@ -61,7 +61,7 @@ class CreateAmendForeignServiceSpec extends ServiceSpec {
     implicit val logContext: EndpointLogContext = EndpointLogContext("c", "ep")
 
     val service: CreateAmendForeignService = new CreateAmendForeignService(
-      connector = mockAmendForeignConnector
+      connector = mockCreateAmendForeignConnector
     )
 
   }
@@ -71,7 +71,7 @@ class CreateAmendForeignServiceSpec extends ServiceSpec {
       "return correct result for a success" in new Test {
         val outcome = Right(ResponseWrapper(correlationId, ()))
 
-        MockAmendForeignConnector
+        MockedCreateAmendForeignConnector
           .amendForeign(amendForeignRequest)
           .returns(Future.successful(outcome))
 
@@ -83,7 +83,7 @@ class CreateAmendForeignServiceSpec extends ServiceSpec {
         def serviceError(downstreamErrorCode: String, error: MtdError): Unit =
           s"a $downstreamErrorCode error is returned from the service" in new Test {
 
-            MockAmendForeignConnector
+              MockedCreateAmendForeignConnector
               .amendForeign(amendForeignRequest)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 

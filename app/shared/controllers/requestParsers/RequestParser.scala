@@ -17,7 +17,6 @@
 package shared.controllers.requestParsers
 
 import shared.controllers.requestParsers.validators.Validator
-import shared.models.errors
 import shared.models.errors.{BadRequestError, ErrorWrapper}
 import shared.models.request.RawData
 import shared.utils.Logging
@@ -39,14 +38,13 @@ trait RequestParser[Raw <: RawData, Request] extends Logging {
         logger.warn(
           "[RequestParser][parseRequest] " +
             s"Validation failed with ${err.code} error for the request with CorrelationId: $correlationId")
-        Left(errors.ErrorWrapper(correlationId, err, None))
+        Left(ErrorWrapper(correlationId, err, None))
       case errs =>
         logger.warn(
           "[RequestParser][parseRequest] " +
             s"Validation failed with ${errs.map(_.code).mkString(",")} error for the request with CorrelationId: $correlationId")
-        Left(errors.ErrorWrapper(correlationId, BadRequestError, Some(errs)))
+        Left(ErrorWrapper(correlationId, BadRequestError, Some(errs)))
     }
   }
 
 }
-

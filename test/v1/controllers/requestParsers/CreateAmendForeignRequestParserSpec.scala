@@ -76,7 +76,7 @@ class CreateAmendForeignRequestParserSpec extends UnitSpec {
   trait Test extends MockCreateAmendForeignValidator {
 
     lazy val parser: CreateAmendForeignRequestParser = new CreateAmendForeignRequestParser(
-      validator = mockAmendForeignValidator
+      validator = mockCreateAmendForeignValidator
     )
 
   }

@@ -27,8 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockRetrieveForeignService extends MockFactory {
 
-  val mockRetrieveForeignService: RetrieveForeignService =
-    mock[RetrieveForeignService]
+  val mockRetrieveForeignService: RetrieveForeignService = mock[RetrieveForeignService]
 
   object MockedRetrieveForeignService {
 

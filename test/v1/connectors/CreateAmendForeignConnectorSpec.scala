@@ -16,7 +16,7 @@
 
 package v1.connectors
 
-import shared.connectors.ConnectorSpec
+import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
 import v1.models.request.createAmend
@@ -40,7 +40,8 @@ class CreateAmendForeignConnectorSpec extends ConnectorSpec {
           body = amendForeignRequestBody
         ).returns(Future.successful(outcome))
 
-        await(connector.amendForeign(amendForeignRequest)) shouldBe outcome
+        val result: DownstreamOutcome[Unit] = await(connector.amendForeign(amendForeignRequest))
+        result shouldBe outcome
       }
 
       "return the expected response for a TYS request" when {
@@ -54,7 +55,8 @@ class CreateAmendForeignConnectorSpec extends ConnectorSpec {
             body = amendForeignRequestBody
           ).returns(Future.successful(outcome))
 
-          await(connector.amendForeign(amendForeignRequest)) shouldBe outcome
+          val result: DownstreamOutcome[Unit] = await(connector.amendForeign(amendForeignRequest))
+          result shouldBe outcome
         }
       }
     }

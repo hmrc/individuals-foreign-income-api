@@ -26,12 +26,12 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockCreateAmendForeignService extends MockFactory {
 
-  val mockAmendForeignService: CreateAmendForeignService = mock[CreateAmendForeignService]
+  val mockCreateAmendForeignService: CreateAmendForeignService = mock[CreateAmendForeignService]
 
   object MockedCreateAmendForeignService {
 
     def amendForeign(requestData: CreateAmendForeignRequest): CallHandler[Future[ServiceOutcome[Unit]]] = {
-      (mockAmendForeignService
+      (mockCreateAmendForeignService
         .amendForeign(_: CreateAmendForeignRequest)(_: RequestContext, _: ExecutionContext))
         .expects(requestData, *, *)
     }

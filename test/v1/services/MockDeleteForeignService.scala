@@ -26,8 +26,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockDeleteForeignService extends MockFactory {
 
-  val mockDeleteForeignService: DeleteForeignService =
-    mock[DeleteForeignService]
+  val mockDeleteForeignService: DeleteForeignService = mock[DeleteForeignService]
 
   object MockedDeleteForeignService {
 

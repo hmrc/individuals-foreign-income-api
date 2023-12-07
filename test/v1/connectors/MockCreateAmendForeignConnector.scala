@@ -26,12 +26,12 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockCreateAmendForeignConnector extends MockFactory {
 
-  val mockAmendForeignConnector: CreateAmendForeignConnector = mock[CreateAmendForeignConnector]
+  val mockCreateAmendForeignConnector: CreateAmendForeignConnector = mock[CreateAmendForeignConnector]
 
-  object MockAmendForeignConnector {
+  object MockedCreateAmendForeignConnector {
 
     def amendForeign(request: CreateAmendForeignRequest): CallHandler[Future[DownstreamOutcome[Unit]]] = {
-      (mockAmendForeignConnector
+      (mockCreateAmendForeignConnector
         .amendForeign(_: CreateAmendForeignRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)
     }
