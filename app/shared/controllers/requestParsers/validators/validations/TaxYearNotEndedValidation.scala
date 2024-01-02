@@ -22,7 +22,7 @@ import shared.models.domain.TaxYear
 import shared.models.errors.{MtdError, RuleTaxYearNotEndedError}
 import shared.utils.CurrentDateTime
 
-object TaxYearNotEndedValidation {
+object  TaxYearNotEndedValidation {
 
   // @param taxYear In format YYYY-YY
   def validate(taxYear: String)(implicit dateTimeProvider: CurrentDateTime): List[MtdError] = {
