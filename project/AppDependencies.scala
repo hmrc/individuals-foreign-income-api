@@ -12,8 +12,7 @@ object AppDependencies {
     "org.typelevel"                %% "cats-core"                 % "2.9.0",
     "com.chuusai"                  %% "shapeless"                 % "2.4.0-M1",
     "com.neovisionaries"            % "nv-i18n"                   % "1.29",
-    "com.fasterxml.jackson.module" %% "jackson-module-scala"      % "2.15.2",
-    "joda-time"                     % "joda-time"                 % "2.10.12"
+    "com.fasterxml.jackson.module" %% "jackson-module-scala"      % "2.15.2"
   )
 
   def test(scope: String = "test, it"): Seq[ModuleID] = List(
