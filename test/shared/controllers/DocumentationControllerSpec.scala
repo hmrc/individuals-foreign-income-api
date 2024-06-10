@@ -18,11 +18,12 @@ package shared.controllers
 
 import com.typesafe.config.ConfigFactory
 import controllers.{AssetsConfiguration, DefaultAssetsMetadata, RewriteableAssets}
+import org.apache.pekko.actor.ActorSystem
 import play.api.{Configuration, Environment}
 import play.api.http.{DefaultFileMimeTypes, DefaultHttpErrorHandler, FileMimeTypesConfiguration, HttpConfiguration}
 import play.api.mvc.Result
 import shared.config.rewriters._
-import shared.config.{MockAppConfig}
+import shared.config.MockAppConfig
 import shared.definition._
 import shared.routing.Version1
 import uk.gov.hmrc.http.HeaderCarrier
@@ -31,6 +32,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig {
+  implicit private val actorSystem: ActorSystem = ActorSystem("test")
 
   private val apiTitle = "Individuals Foreign Income (MTD)"
 
@@ -137,7 +139,7 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
     )
 
     private val assets       = new RewriteableAssets(errorHandler, assetsMetadata, mock[Environment])
-    protected val controller = new DocumentationController(apiFactory, docRewriters, assets, cc)
+    protected val controller = new DocumentationController(apiFactory, docRewriters, assets, cc, mock[Configuration])
   }
 
 }
