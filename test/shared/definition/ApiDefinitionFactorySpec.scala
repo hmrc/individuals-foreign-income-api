@@ -17,7 +17,7 @@
 package shared.definition
 
 import cats.implicits.catsSyntaxValidatedId
-import shared.UnitSpec
+import shared.utils.UnitSpec
 import shared.config.Deprecation.NotDeprecated
 import shared.config.{AppConfig, ConfidenceLevelConfig, MockAppConfig}
 import shared.definition.APIStatus.{ALPHA, BETA}
@@ -45,7 +45,7 @@ class ApiDefinitionFactorySpec extends UnitSpec with MockAppConfig {
   }
 
   class Test extends MockHttpClient with MockAppConfig {
-    MockAppConfig.apiGatewayContext returns "individuals/self-assessment/adjustable-summary"
+    MockedAppConfig.apiGatewayContext returns "individuals/self-assessment/adjustable-summary"
 
     protected val apiDefinitionFactory = new MyApiDefinitionFactory
 
@@ -57,7 +57,7 @@ class ApiDefinitionFactorySpec extends UnitSpec with MockAppConfig {
       ).foreach { case (definitionEnabled, configCL, expectedDefinitionCL) =>
         s"confidence-level-check.definition.enabled is $definitionEnabled and confidence-level = $configCL" should {
           s"return confidence level $expectedDefinitionCL" in new Test {
-            MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(
+            MockedAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(
               confidenceLevel = configCL,
               definitionEnabled = definitionEnabled,
               authValidationEnabled = true)
@@ -74,8 +74,8 @@ class ApiDefinitionFactorySpec extends UnitSpec with MockAppConfig {
           (Version4, BETA)
         ).foreach { case (version, status) =>
           s"return the correct $status for $version " in new Test {
-            MockAppConfig.apiStatus(version) returns status.toString
-            MockAppConfig
+            MockedAppConfig.apiStatus(version) returns status.toString
+            MockedAppConfig
               .deprecationFor(version)
               .returns(NotDeprecated.valid)
               .anyNumberOfTimes()
@@ -87,8 +87,8 @@ class ApiDefinitionFactorySpec extends UnitSpec with MockAppConfig {
       "the 'apiStatus' parameter is present and invalid" should {
         List(Version3, Version4).foreach { version =>
           s"default to alpha for $version " in new Test {
-            MockAppConfig.apiStatus(version) returns "ALPHO"
-            MockAppConfig
+            MockedAppConfig.apiStatus(version) returns "ALPHO"
+            MockedAppConfig
               .deprecationFor(version)
               .returns(NotDeprecated.valid)
               .anyNumberOfTimes()
@@ -99,8 +99,8 @@ class ApiDefinitionFactorySpec extends UnitSpec with MockAppConfig {
 
       "the 'deprecatedOn' parameter is missing for a deprecated version" should {
         "throw exception" in new Test {
-          MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
-          MockAppConfig
+          MockedAppConfig.apiStatus(Version3) returns "DEPRECATED"
+          MockedAppConfig
             .deprecationFor(Version3)
             .returns("deprecatedOn date is required for a deprecated version".invalid)
             .anyNumberOfTimes()
