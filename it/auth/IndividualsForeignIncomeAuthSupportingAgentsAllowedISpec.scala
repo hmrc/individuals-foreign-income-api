@@ -29,21 +29,9 @@ class IndividualsForeignIncomeAuthSupportingAgentsAllowedISpec extends AuthSuppo
 
   val supportingAgentsAllowedEndpoint = "create-amend-foreign"
 
-  val mtdUrl = s"/$nino/$taxYear"
+  val mtdUrl = s"/$nino/2019-20"
 
-  def sendMtdRequest(request: WSRequest): WSResponse = await(request.put(requestBodyJson))
-
-  val downstreamUri: String = s"/income-tax/income/foreign/$nino/$taxYear"
-
-  override val downstreamHttpMethod: DownstreamStub.HTTPMethod = DownstreamStub.PUT
-
-  override val downstreamSuccessStatus: Int = NO_CONTENT
-
-  override val expectedMtdSuccessStatus: Int = OK
-
-  val maybeDownstreamResponseJson: Option[JsValue] =None
-
-  def requestBodyJson: JsValue = Json.parse(
+  def sendMtdRequest(request: WSRequest): WSResponse = await(request.put(Json.parse(
     """
       |{
       |   "foreignEarnings": {
@@ -64,8 +52,16 @@ class IndividualsForeignIncomeAuthSupportingAgentsAllowedISpec extends AuthSuppo
       |    ]
       |}
       """.stripMargin
-  )
+  )))
 
-  def taxYear: String = "2019-20"
+  val downstreamUri: String = s"/income-tax/income/foreign/$nino/2019-20"
+
+  override val downstreamHttpMethod: DownstreamStub.HTTPMethod = DownstreamStub.PUT
+
+  override val downstreamSuccessStatus: Int = NO_CONTENT
+
+  override val expectedMtdSuccessStatus: Int = OK
+
+  val maybeDownstreamResponseJson: Option[JsValue] =None
 
 }
