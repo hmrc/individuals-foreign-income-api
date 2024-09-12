@@ -22,7 +22,6 @@ import play.api.libs.ws.{WSRequest, WSResponse}
 import shared.auth.AuthMainAgentsOnlyISpec
 import shared.services.DownstreamStub
 
-
 class IndividualsForeignIncomeAuthMainAgentsOnlyISpec extends AuthMainAgentsOnlyISpec {
 
   val callingApiVersion = "1.0"
@@ -31,8 +30,10 @@ class IndividualsForeignIncomeAuthMainAgentsOnlyISpec extends AuthMainAgentsOnly
 
   val mtdUrl = s"/$nino/2019-20"
 
-  def sendMtdRequest(request: WSRequest): WSResponse = await(request.put(Json.parse(
-    """
+  def sendMtdRequest(request: WSRequest): WSResponse = await(
+    request.put(
+      Json.parse(
+        """
       |{
       |   "foreignEarnings": {
       |      "customerReference": "FOREIGNINCME123A",
@@ -52,7 +53,7 @@ class IndividualsForeignIncomeAuthMainAgentsOnlyISpec extends AuthMainAgentsOnly
       |    ]
       |}
       """.stripMargin
-  )))
+      )))
 
   val downstreamUri: String = s"/income-tax/income/foreign/$nino/2019-20"
 
@@ -62,6 +63,6 @@ class IndividualsForeignIncomeAuthMainAgentsOnlyISpec extends AuthMainAgentsOnly
 
   override val expectedMtdSuccessStatus: Int = OK
 
-  val maybeDownstreamResponseJson: Option[JsValue] =None
+  val maybeDownstreamResponseJson: Option[JsValue] = None
 
 }
