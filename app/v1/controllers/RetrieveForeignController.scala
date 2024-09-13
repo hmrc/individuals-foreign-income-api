@@ -40,7 +40,6 @@ class RetrieveForeignController @Inject() (val authService: EnrolmentsAuthServic
 
   override val endpointName: String = "retrieve-foreign"
 
-
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "RetrieveForeignController",

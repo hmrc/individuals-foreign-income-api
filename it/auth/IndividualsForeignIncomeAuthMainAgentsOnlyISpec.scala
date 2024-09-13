@@ -32,28 +32,29 @@ class IndividualsForeignIncomeAuthMainAgentsOnlyISpec extends AuthMainAgentsOnly
 
   def sendMtdRequest(request: WSRequest): WSResponse = await(
     request.put(
-      Json.parse(
-        """
-      |{
-      |   "foreignEarnings": {
-      |      "customerReference": "FOREIGNINCME123A",
-      |      "earningsNotTaxableUK": 1999.99
-      |   },
-      |   "unremittableForeignIncome": [
-      |       {
-      |          "countryCode": "FRA",
-      |          "amountInForeignCurrency": 1999.99,
-      |          "amountTaxPaid": 1999.99
-      |       },
-      |       {
-      |          "countryCode": "IND",
-      |          "amountInForeignCurrency": 2999.99,
-      |          "amountTaxPaid": 2999.99
-      |       }
-      |    ]
-      |}
-      """.stripMargin
-      )))
+      Json.parse("""
+         |{
+         |   "foreignEarnings": {
+         |      "customerReference": "FOREIGNINCME123A",
+         |      "earningsNotTaxableUK": 1999.99
+         |   },
+         |   "unremittableForeignIncome": [
+         |       {
+         |          "countryCode": "FRA",
+         |          "amountInForeignCurrency": 1999.99,
+         |          "amountTaxPaid": 1999.99
+         |       },
+         |       {
+         |          "countryCode": "IND",
+         |          "amountInForeignCurrency": 2999.99,
+         |          "amountTaxPaid": 2999.99
+         |       }
+         |    ]
+         |}
+         |""".stripMargin
+      )
+    )
+  )
 
   val downstreamUri: String = s"/income-tax/income/foreign/$nino/2019-20"
 
