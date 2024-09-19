@@ -4,9 +4,17 @@
   "description": "Retrieve Foreign Income Request",
   "type": "object",
   "properties": {
-    "submittedOn": {"$ref": "definitions.json#/definitions/submittedOn"},
-    "foreignEarnings": {"$ref": "definitions.json#/definitions/foreignEarnings"},
-    "unremittableForeignIncome": {"$ref": "definitions.json#/definitions/unremittableForeignIncome"},
+    "submittedOn": {
+      "$ref": "definitions.json#/definitions/submittedOn"
+    },
+    "foreignEarnings": {
+      "$ref": "definitions.json#/definitions/foreignEarnings"
+    },
+    "unremittableForeignIncome": {
+      "$ref": "definitions.json#/definitions/unremittableForeignIncome"
+    }
   },
-  "required": ["submittedOn"]
+  "required": [
+    "submittedOn"
+  ]
 }

@@ -24,7 +24,9 @@
           "maximum:": 99999999999.99
         }
       },
-      "required": ["earningsNotTaxableUK"]
+      "required": [
+        "earningsNotTaxableUK"
+      ]
     },
     "unremittableForeignIncome": {
       "type": "array",

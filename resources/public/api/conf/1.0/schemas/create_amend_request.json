@@ -4,8 +4,12 @@
   "description": "Create And Amend Foreign Income Request",
   "type": "object",
   "properties": {
-    "foreignEarnings": {"$ref": "definitions.json#/definitions/foreignEarnings"},
-    "unremittableForeignIncome": {"$ref": "definitions.json#/definitions/unremittableForeignIncome"}
+    "foreignEarnings": {
+      "$ref": "definitions.json#/definitions/foreignEarnings"
+    },
+    "unremittableForeignIncome": {
+      "$ref": "definitions.json#/definitions/unremittableForeignIncome"
+    }
   }
 }
 
