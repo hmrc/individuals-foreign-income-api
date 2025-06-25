@@ -16,6 +16,7 @@
 
 package v1.endpoints
 
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
@@ -31,7 +32,10 @@ class DeleteForeignControllerISpec extends IntegrationBaseSpec {
     "return a 204 status code" when {
       "any valid request is made" in new NonTysTest {
 
-        override def setupStubs(): Unit = {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
           DownstreamStub.onSuccess(DownstreamStub.DELETE, downstreamUri, NO_CONTENT)
         }
 
@@ -42,7 +46,10 @@ class DeleteForeignControllerISpec extends IntegrationBaseSpec {
 
       "any valid request is made for a Tax Year Specific (TYS) tax year" in new TysIfsTest {
 
-        override def setupStubs(): Unit = {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
           DownstreamStub.onSuccess(DownstreamStub.DELETE, downstreamUri, NO_CONTENT)
         }
 
@@ -61,6 +68,12 @@ class DeleteForeignControllerISpec extends IntegrationBaseSpec {
             override val nino: String       = requestNino
             override val mtdTaxYear: String = requestTaxYear
 
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+            }
+
             val response: WSResponse = await(request().delete())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
@@ -68,7 +81,7 @@ class DeleteForeignControllerISpec extends IntegrationBaseSpec {
           }
         }
 
-        val input = List(
+        val input = Seq(
           ("AA1123A", "2019-20", BAD_REQUEST, NinoFormatError),
           ("AA123456A", "20177", BAD_REQUEST, TaxYearFormatError),
           ("AA123456A", "2015-17", BAD_REQUEST, RuleTaxYearRangeInvalidError),
@@ -81,7 +94,10 @@ class DeleteForeignControllerISpec extends IntegrationBaseSpec {
         def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"downstream returns an $downstreamCode error and status $downstreamStatus" in new NonTysTest {
 
-            override def setupStubs(): Unit = {
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
               DownstreamStub.onError(DownstreamStub.DELETE, downstreamUri, downstreamStatus, errorBody(downstreamCode))
             }
 
@@ -126,7 +142,7 @@ class DeleteForeignControllerISpec extends IntegrationBaseSpec {
     def mtdTaxYear: String
     def downstreamUri: String
 
-    def setupStubs(): Unit = {}
+    def setupStubs(): StubMapping
 
     def request(): WSRequest = {
       AuditStub.audit()
@@ -145,13 +161,11 @@ class DeleteForeignControllerISpec extends IntegrationBaseSpec {
 
   private trait NonTysTest extends Test {
     def mtdTaxYear: String = "2019-20"
-
-    def downstreamUri: String = s"/income-tax/income/foreign/$nino/2019-20"
+    def downstreamUri: String = s"/income-tax/income/foreign/$nino/$mtdTaxYear"
   }
 
   private trait TysIfsTest extends Test {
     def mtdTaxYear: String = "2023-24"
-
     def downstreamUri: String = s"/income-tax/income/foreign/23-24/$nino"
   }
 
