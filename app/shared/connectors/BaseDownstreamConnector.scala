@@ -81,7 +81,7 @@ trait BaseDownstreamConnector extends Logging {
     } yield result
   }
 
-  def delete[Resp](uri: DownstreamUri[Resp], queryParams: Seq[(String, String)] = Nil)(implicit
+  def delete[Resp](uri: DownstreamUri[Resp])(implicit
       ec: ExecutionContext,
       hc: HeaderCarrier,
       httpReads: HttpReads[DownstreamOutcome[Resp]],
@@ -90,8 +90,7 @@ trait BaseDownstreamConnector extends Logging {
     val strategy = uri.strategy
 
     def doDelete(implicit hc: HeaderCarrier): Future[DownstreamOutcome[Resp]] = {
-      val fullUrl = UrlUtils.appendQueryParams(getBackendUri(uri.path, strategy), queryParams)
-      http.delete(url"$fullUrl").execute
+      http.delete(url"${getBackendUri(uri.path, strategy)}").execute
     }
 
     for {
