@@ -16,7 +16,7 @@
 
 package v1.models.response.retrieve
 
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class UnremittableForeignIncome(countryCode: String, amountInForeignCurrency: BigDecimal, amountTaxPaid: Option[BigDecimal])

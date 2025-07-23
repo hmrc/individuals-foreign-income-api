@@ -28,7 +28,7 @@ import shared.models.outcomes.ResponseWrapper
 import shared.services.MockAuditService
 import v1.controllers.validators.MockCreateAmendForeignValidatorFactory
 import v1.models.request.createAmend
-import v1.models.request.createAmend._
+import v1.models.request.createAmend.*
 import v1.services.MockCreateAmendForeignService
 
 import scala.concurrent.ExecutionContext.Implicits.global

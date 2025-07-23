@@ -16,7 +16,7 @@
 
 package v2.models.request.createAmend
 
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, OWrites, Reads}
 import v2.utils.JsonUtils
 
@@ -34,6 +34,6 @@ object CreateAmendForeignRequestBody extends JsonUtils {
   implicit val writes: OWrites[CreateAmendForeignRequestBody] = (
     (JsPath \ "foreignEarnings").writeNullable[ForeignEarnings] and
       (JsPath \ "unremittableForeignIncome").writeNullable[Seq[UnremittableForeignIncomeItem]]
-  )(unlift(CreateAmendForeignRequestBody.unapply))
+  )(w => Tuple.fromProductTyped(w))
 
 }

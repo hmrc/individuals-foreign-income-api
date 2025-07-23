@@ -16,8 +16,10 @@
 
 import uk.gov.hmrc.DefaultBuildSettings
 
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "3.3.5"
 ThisBuild / majorVersion := 1
+ThisBuild / scalacOptions += "-Werror"
+ThisBuild / scalacOptions += "-nowarn" // Added help suppress warnings in migration. Must be removed when changes shown are complete
 
 val appName     = "individuals-foreign-income-api"
 
@@ -31,7 +33,6 @@ lazy val microservice = Project(appName, file("."))
     scalacOptions ++= List(
       "-language:higherKinds",
       "-Xlint:-byname-implicit",
-      "-Xfatal-warnings",
       "-Wconf:src=routes/.*:silent",
       "-feature"
     )
@@ -40,7 +41,7 @@ lazy val microservice = Project(appName, file("."))
     Compile / unmanagedResourceDirectories += baseDirectory.value / "resources",
     Compile / unmanagedClasspath += baseDirectory.value / "resources"
   )
-  .settings(CodeCoverageSettings.settings: _*)
+  .settings(CodeCoverageSettings.settings *)
   .settings(PlayKeys.playDefaultPort := 7760)
 
 lazy val it = project

@@ -22,7 +22,7 @@ import play.api.mvc.Result
 import shared.config.MockAppConfig
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.domain.{Nino, TaxYear, Timestamp}
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import v1.controllers.validators.MockRetrieveForeignValidatorFactory
 import v1.fixtures.RetrieveForeignFixture.fullRetrieveForeignResponseJson

@@ -19,7 +19,7 @@ package v2.controllers
 import config.ForeignIncomeConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import shared.config.AppConfig
-import shared.controllers._
+import shared.controllers.*
 import shared.routing.Version1
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.IdGenerator
