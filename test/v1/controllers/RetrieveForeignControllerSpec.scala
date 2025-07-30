@@ -109,14 +109,13 @@ class RetrieveForeignControllerSpec
 
   trait Test extends ControllerTest with MockForeignIncomeConfig {
 
-    val controller = new RetrieveForeignController(
+    val controller: RetrieveForeignController = new RetrieveForeignController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockRetrieveForeignValidatorFactory,
       service = mockRetrieveForeignService,
       cc = cc,
-      idGenerator = mockIdGenerator,
-      foreignIncomeConfig = mockForeignIncomeConfig
+      idGenerator = mockIdGenerator
     )
 
     MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(

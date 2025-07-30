@@ -46,10 +46,9 @@ class CreateAmendForeignService @Inject() (connector: CreateAmendForeignConnecto
     )
 
     val extraTysErrors = Map(
-      "INVALID_CORRELATION_ID"    -> InternalError,
-      "TAX_YEAR_NOT_SUPPORTED"    -> RuleTaxYearNotSupportedError,
-      "OUTSIDE_AMENDMENT_WINDOW"  -> RuleOutsideAmendmentWindowError,
-
+      "INVALID_CORRELATION_ID"   -> InternalError,
+      "TAX_YEAR_NOT_SUPPORTED"   -> RuleTaxYearNotSupportedError,
+      "OUTSIDE_AMENDMENT_WINDOW" -> RuleOutsideAmendmentWindowError
     )
     errors ++ extraTysErrors
 

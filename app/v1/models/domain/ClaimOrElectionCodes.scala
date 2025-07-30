@@ -24,6 +24,6 @@ enum ClaimOrElectionCodes {
 }
 
 object ClaimOrElectionCodes {
-  given Format[ClaimOrElectionCodes] = Enums.format(values)
+  given Format[ClaimOrElectionCodes]                        = Enums.format(values)
   val parser: PartialFunction[String, ClaimOrElectionCodes] = Enums.parser(values)
 }

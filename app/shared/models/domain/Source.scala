@@ -20,7 +20,7 @@ import play.api.libs.json.*
 import shared.utils.enums.Enums
 
 enum Source {
-   case `MTD-SA`
+  case `MTD-SA`
 }
 
 object Source {

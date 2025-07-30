@@ -64,10 +64,10 @@ class DeleteForeignServiceSpec extends ServiceSpec {
         val extraTysErrors = List(
           ("INVALID_CORRELATION_ID", InternalError),
           ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError),
-          ("OUTSIDE_AMENDMENT_WINDOW", RuleOutsideAmendmentWindowError),
+          ("OUTSIDE_AMENDMENT_WINDOW", RuleOutsideAmendmentWindowError)
         )
 
-        (errors ++ extraTysErrors).foreach(args => (serviceError _).tupled(args))
+        (errors ++ extraTysErrors).foreach(args => serviceError.tupled(args))
       }
     }
   }

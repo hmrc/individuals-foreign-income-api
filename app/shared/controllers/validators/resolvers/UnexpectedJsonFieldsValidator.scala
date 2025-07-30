@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import shared.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.Sch
 import shared.models.domain.TaxYear
 import shared.models.errors.RuleIncorrectOrEmptyBodyError
 import shared.utils.Logging
-
 import scala.compiletime.{constValue, erasedValue, summonInline}
 import scala.deriving.Mirror
 
@@ -82,8 +81,7 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
     }
 
     case class Arr(items: Seq[SchemaStructure]) extends SchemaStructure
-
-    case object Leaf extends SchemaStructure
+    case object Leaf                            extends SchemaStructure
   }
 
   trait SchemaStructureSource[A] {
@@ -100,8 +98,6 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
     def apply[A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[A] = aInstance
 
     def instance[A](func: A => SchemaStructure): SchemaStructureSource[A] = (value: A) => func(value)
-
-    private def instanceObj[A](func: A => SchemaStructure.Obj): ObjSchemaStructureSource[A] = (value: A) => func(value)
 
     def leaf[A]: SchemaStructureSource[A] = SchemaStructureSource.instance(_ => SchemaStructure.Leaf)
 
@@ -122,14 +118,13 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
     given [A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[Option[A]] =
       instance(opt => opt.map(aInstance.schemaStructureOf).getOrElse(SchemaStructure.Leaf))
 
-    given [A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[Seq[A]] =
-      instance(seq => SchemaStructure.Arr(seq.map(aInstance.schemaStructureOf)))
-
     given [A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[List[A]] =
       instance(list => SchemaStructure.Arr(list.map(aInstance.schemaStructureOf)))
 
-    // Lazy prevents infinite recursion in generic derivation
+    given [A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[Seq[A]] =
+      instance(seq => SchemaStructure.Arr(seq.map(aInstance.schemaStructureOf)))
 
+    // Lazy prevents infinite recursion in generic derivation
     final class Lazy[+A](val value: () => A) extends AnyVal
 
     object Lazy {
@@ -138,9 +133,9 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
 
     inline given derived[A](using m: Mirror.ProductOf[A]): SchemaStructureSource[A] =
       instance { a =>
-        val elemLabels = summonLabels[m.MirroredElemLabels]
+        val elemLabels    = summonLabels[m.MirroredElemLabels]
         val elemInstances = summonAllInstances[m.MirroredElemTypes]
-        val elems = a.asInstanceOf[Product].productIterator.toList
+        val elems         = a.asInstanceOf[Product].productIterator.toList
         val fields = elemLabels.lazyZip(elems).lazyZip(elemInstances).map { (label, value, checker) =>
           label -> checker.value().schemaStructureOf(value)
         }
@@ -149,14 +144,16 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
 
     private inline def summonLabels[T <: Tuple]: List[String] =
       inline erasedValue[T] match {
-        case _: (h *: t) => constValue[h].asInstanceOf[String] :: summonLabels[t]
+        case _: (h *: t)   => constValue[h].asInstanceOf[String] :: summonLabels[t]
         case _: EmptyTuple => Nil
       }
 
     private inline def summonAllInstances[T <: Tuple]: List[Lazy[SchemaStructureSource[Any]]] =
       inline erasedValue[T] match {
-        case _: (h *: t) => summonInline[Lazy[SchemaStructureSource[h]]].asInstanceOf[Lazy[SchemaStructureSource[Any]]] :: summonAllInstances[t]
+        case _: (h *: t)   => summonInline[Lazy[SchemaStructureSource[h]]].asInstanceOf[Lazy[SchemaStructureSource[Any]]] :: summonAllInstances[t]
         case _: EmptyTuple => Nil
       }
+
   }
+
 }

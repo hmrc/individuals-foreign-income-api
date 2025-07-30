@@ -16,7 +16,6 @@
 
 package v1.controllers
 
-import config.MockForeignIncomeConfig
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
@@ -41,8 +40,7 @@ class DeleteForeignControllerSpec
     with MockAuditService
     with MockDeleteForeignService
     with MockDeleteForeignValidatorFactory
-    with MockIdGenerator
-    with MockForeignIncomeConfig {
+    with MockIdGenerator {
 
   val minTaxYear: Int = 2019
   val taxYear: String = "2019-20"
@@ -88,15 +86,14 @@ class DeleteForeignControllerSpec
 
   trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
 
-    val controller = new DeleteForeignController(
+    val controller: DeleteForeignController = new DeleteForeignController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockDeleteForeignValidatorFactory,
       service = mockDeleteForeignService,
       auditService = mockAuditService,
       cc = cc,
-      idGenerator = mockIdGenerator,
-      mockForeignIncomeConfig
+      idGenerator = mockIdGenerator
     )
 
     MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(

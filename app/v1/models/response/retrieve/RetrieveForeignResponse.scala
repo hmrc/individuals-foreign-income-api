@@ -31,7 +31,7 @@ object RetrieveForeignResponse extends JsonUtils {
     (JsPath \ "submittedOn").read[Timestamp] and
       (JsPath \ "foreignEarnings").readNullable[ForeignEarnings] and
       (JsPath \ "unremittableForeignIncome").readNullable[Seq[UnremittableForeignIncome]].mapEmptySeqToNone
-  )(RetrieveForeignResponse.apply _)
+  )(RetrieveForeignResponse.apply)
 
   implicit val writes: OWrites[RetrieveForeignResponse] = Json.writes[RetrieveForeignResponse]
 }

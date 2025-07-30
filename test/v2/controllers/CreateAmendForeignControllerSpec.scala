@@ -128,7 +128,7 @@ class CreateAmendForeignControllerSpec
 
   trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
 
-    val controller = new CreateAmendForeignController(
+    val controller: CreateAmendForeignController = new CreateAmendForeignController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockCreateAmendForeignValidatorFactory,
