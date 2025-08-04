@@ -25,6 +25,7 @@ import shared.models.errors.*
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
 import v1.models.errors.{CountryCodeRuleError, CustomerRefFormatError}
+import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
 
 class CreateAmendForeignControllerISpec extends IntegrationBaseSpec {
 

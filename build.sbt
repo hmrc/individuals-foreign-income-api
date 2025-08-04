@@ -16,7 +16,7 @@
 
 import uk.gov.hmrc.DefaultBuildSettings
 
-ThisBuild / scalaVersion := "3.4.3"
+ThisBuild / scalaVersion := "3.5.2"
 ThisBuild / majorVersion := 1
 ThisBuild / scalacOptions ++= Seq(
   "-Werror",
@@ -32,7 +32,8 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     scalacOptions ++= Seq(
-      "-feature"
+      "-feature",
+      "-Wconf:src=routes/.*:s"
     )
   )
   .settings(

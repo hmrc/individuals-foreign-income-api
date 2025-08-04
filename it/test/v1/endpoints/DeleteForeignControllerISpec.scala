@@ -24,6 +24,7 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors.*
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
+import play.api.libs.ws.WSBodyReadables.readableAsString
 
 class DeleteForeignControllerISpec extends IntegrationBaseSpec {
 

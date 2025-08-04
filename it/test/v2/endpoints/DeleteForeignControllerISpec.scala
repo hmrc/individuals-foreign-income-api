@@ -25,6 +25,7 @@ import shared.models.errors.*
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
 import v2.models.errors.RuleOutsideAmendmentWindowError
+import play.api.libs.ws.WSBodyReadables.readableAsString
 
 class DeleteForeignControllerISpec extends IntegrationBaseSpec {
 
