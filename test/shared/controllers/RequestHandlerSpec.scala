@@ -148,7 +148,7 @@ class RequestHandlerSpec
         status(result) shouldBe NO_CONTENT
       }
 
-      "wrap the response with hateoas links if required§" in {
+      "wrap the response with hateoas links if required" in {
         val requestHandler = successRequestHandler.withHateoasResult(mockHateoasFactory)(HData, successCode)
 
         mockDeprecation(NotDeprecated)
@@ -444,6 +444,16 @@ class RequestHandlerSpec
 
       val result = successRequestHandler.withErrorHandling(new CustomErrorHandling)
       result.errorHandling shouldBe a[CustomErrorHandling]
+    }
+  }
+
+  "withResponseModifier()" should {
+    "return a new RequestHandlerBuilder with the response modifier" in {
+      val responseModifier: Output.type => Output.type = identity
+
+      val builderWithModifier = successRequestHandler.withResponseModifier(responseModifier)
+      builderWithModifier.responseModifier shouldBe Some(responseModifier)
+
     }
   }
 
