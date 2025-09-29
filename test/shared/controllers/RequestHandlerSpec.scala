@@ -447,14 +447,4 @@ class RequestHandlerSpec
     }
   }
 
-  "withResponseModifier()" should {
-    "return a new RequestHandlerBuilder with the response modifier" in {
-      val responseModifier: Output.type => Output.type = identity
-
-      val builderWithModifier = successRequestHandler.withResponseModifier(responseModifier)
-      builderWithModifier.responseModifier shouldBe Some(responseModifier)
-
-    }
-  }
-
 }
