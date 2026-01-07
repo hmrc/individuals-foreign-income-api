@@ -93,10 +93,10 @@ class EnrolmentsAuthService @Inject() (val connector: AuthConnector, val appConf
         enrolment  <- enrolments.getEnrolment("HMRC-AS-AGENT")
         identifier <- enrolment.getIdentifier("AgentReferenceNumber")
       } yield UserDetails(mtdId, agentType, Some(identifier.value))
-    ).toRight(left = {
+    ).toRight {
       logger.warn(s"[EnrolmentsAuthService][authorised] No AgentReferenceNumber defined on agent enrolment.")
       InternalError
-    })
+    }
 
 }
 
