@@ -18,7 +18,7 @@ package shared.services
 
 import shared.config.AppConfig
 import shared.models.auth.UserDetails
-import shared.models.errors.{InternalError, _}
+import shared.models.errors.{InternalError, *}
 import shared.models.outcomes.AuthOutcome
 import shared.services.EnrolmentsAuthService.{
   authorisationDisabledPredicate,
@@ -27,8 +27,8 @@ import shared.services.EnrolmentsAuthService.{
   supportingAgentAuthPredicate
 }
 import shared.utils.Logging
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual, Organisation}
 import uk.gov.hmrc.auth.core.*
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual, Organisation}
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.*
 import uk.gov.hmrc.auth.core.retrieve.~
@@ -52,46 +52,33 @@ class EnrolmentsAuthService @Inject() (val connector: AuthConnector, val appConf
     else
       authorisationDisabledPredicate(mtdId)
 
-  def authorised(
-      mtdId: String,
-      endpointAllowsSupportingAgents: Boolean = false
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuthOutcome] = {
-
+  def authorised(mtdId: String, endpointAllowsSupportingAgents: Boolean = false)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext): Future[AuthOutcome] = {
     authFunction
       .authorised(initialPredicate(mtdId))
       .retrieve(affinityGroup and authorisedEnrolments) {
         case Some(Individual) ~ _ =>
-          Future.successful(Right(UserDetails("", "Individual", None)))
-
+          Future.successful(Right(UserDetails(mtdId, "Individual", None)))
         case Some(Organisation) ~ _ =>
-          Future.successful(Right(UserDetails("", "Organisation", None)))
-
+          Future.successful(Right(UserDetails(mtdId, "Organisation", None)))
         case Some(Agent) ~ authorisedEnrolments =>
           authFunction
             .authorised(mtdEnrolmentPredicate(mtdId)) {
-              Future.successful(agentDetails(authorisedEnrolments))
+              Future.successful(agentDetails(mtdId, authorisedEnrolments, "Agent"))
             }
-            .recoverWith { case _: AuthorisationException =>
-              if (endpointAllowsSupportingAgents) {
+            .recoverWith {
+              case _: AuthorisationException if endpointAllowsSupportingAgents =>
                 authFunction
                   .authorised(supportingAgentAuthPredicate(mtdId)) {
-                    Future.successful(agentDetails(authorisedEnrolments))
+                    Future.successful(agentDetails(mtdId, authorisedEnrolments, "Supporting Agent"))
                   }
-              } else {
-                Future.successful(Left(ClientOrAgentNotAuthorisedError))
-              }
-                .recoverWith { case _: AuthorisationException =>
-                  Future.successful(Left(ClientOrAgentNotAuthorisedError))
-                }
             }
-
         case _ =>
           logger.warn(s"[EnrolmentsAuthService][authorised] Invalid AffinityGroup.")
           Future.successful(Left(ClientOrAgentNotAuthorisedError))
       }
       .recoverWith {
-        case _: MissingBearerToken =>
-          Future.successful(Left(ClientOrAgentNotAuthorisedError))
         case _: AuthorisationException =>
           Future.successful(Left(ClientOrAgentNotAuthorisedError))
         case error =>
@@ -100,13 +87,12 @@ class EnrolmentsAuthService @Inject() (val connector: AuthConnector, val appConf
       }
   }
 
-  private def agentDetails(authorisedEnrolments: Enrolments): Either[MtdError, UserDetails] =
+  private def agentDetails(mtdId: String, enrolments: Enrolments, agentType: String): Either[MtdError, UserDetails] =
     (
       for {
-        enrolment  <- authorisedEnrolments.getEnrolment("HMRC-AS-AGENT")
+        enrolment  <- enrolments.getEnrolment("HMRC-AS-AGENT")
         identifier <- enrolment.getIdentifier("AgentReferenceNumber")
-        arn = identifier.value
-      } yield UserDetails("", "Agent", Some(arn))
+      } yield UserDetails(mtdId, agentType, Some(identifier.value))
     ).toRight(left = {
       logger.warn(s"[EnrolmentsAuthService][authorised] No AgentReferenceNumber defined on agent enrolment.")
       InternalError
