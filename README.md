@@ -7,9 +7,9 @@ The Individuals Foreign Income API allows a developer to create, amend, retrieve
 
 ## Requirements
 
-- Scala 2.13.x
+- Scala 3.5.x
 - Java 11
-- sbt 1.9.7
+- sbt 1.10.10
 - [Service Manager](https://github.com/hmrc/service-manager)
 
 ## Development Setup
@@ -22,7 +22,7 @@ Start the service manager profile: `sm2 --start MTDFB_INDIVIDUALS_FOREIGN_INCOME
 
 Run unit tests: `sbt test`
 
-Run integration tests: `sbt it:test`
+Run integration tests: `sbt it/test`
 
 ## Viewing Open API Spec (OAS) docs
 

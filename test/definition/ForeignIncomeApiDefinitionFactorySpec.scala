@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import shared.config.Deprecation.NotDeprecated
 import shared.config.MockAppConfig
 import shared.definition.APIStatus.BETA
 import shared.definition.{APIDefinition, APIVersion, Definition}
-import shared.routing.{Version1, Version2}
+import shared.routing.Version2
 import shared.utils.UnitSpec
 
 class ForeignIncomeApiDefinitionFactorySpec extends UnitSpec with MockAppConfig {
@@ -31,11 +31,9 @@ class ForeignIncomeApiDefinitionFactorySpec extends UnitSpec with MockAppConfig 
       "return a valid Definition case class" in {
         MockedAppConfig.apiGatewayContext returns "individuals/foreign-income"
 
-        List(Version1, Version2).foreach { version =>
-          MockedAppConfig.apiStatus(version) returns "BETA"
-          MockedAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
-          MockedAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()
-        }
+        MockedAppConfig.apiStatus(Version2) returns "BETA"
+        MockedAppConfig.endpointsEnabled(Version2).returns(true).anyNumberOfTimes()
+        MockedAppConfig.deprecationFor(Version2).returns(NotDeprecated.valid).anyNumberOfTimes()
 
         val apiDefinitionFactory = new ForeignIncomeApiDefinitionFactory(mockAppConfig)
 
@@ -47,11 +45,6 @@ class ForeignIncomeApiDefinitionFactorySpec extends UnitSpec with MockAppConfig 
               context = "individuals/foreign-income",
               categories = List("INCOME_TAX_MTD"),
               versions = List(
-                APIVersion(
-                  Version1,
-                  status = BETA,
-                  endpointsEnabled = true
-                ),
                 APIVersion(
                   Version2,
                   status = BETA,
