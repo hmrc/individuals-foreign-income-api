@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package v2.controllers
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import shared.config.AppConfig
 import shared.controllers.*
-import shared.routing.Version1
+import shared.routing.Version2
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.IdGenerator
 import v2.controllers.validators.DeleteForeignValidatorFactory
@@ -58,7 +58,7 @@ class DeleteForeignController @Inject() (val authService: EnrolmentsAuthService,
           auditService = auditService,
           auditType = "DeleteForeignIncome",
           transactionName = "delete-foreign-income",
-          apiVersion = Version1,
+          apiVersion = Version2,
           params = Map("nino" -> nino, "taxYear" -> taxYear),
           requestBody = None
         ))

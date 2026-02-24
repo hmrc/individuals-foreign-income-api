@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
 import shared.config.AppConfig
 import shared.controllers.*
-import shared.routing.Version1
+import shared.routing.Version2
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.IdGenerator
 import v2.controllers.validators.CreateAmendForeignValidatorFactory
@@ -60,7 +60,7 @@ class CreateAmendForeignController @Inject() (val authService: EnrolmentsAuthSer
           auditService = auditService,
           auditType = "CreateAmendForeignIncome",
           transactionName = "create-amend-foreign-income",
-          apiVersion = Version1,
+          apiVersion = Version2,
           params = Map("nino" -> nino, "taxYear" -> taxYear),
           requestBody = Some(request.body),
           includeResponse = true

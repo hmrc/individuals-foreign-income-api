@@ -25,7 +25,7 @@ import shared.services.DownstreamStub
 
 class IndividualsForeignIncomeAuthMainAgentsOnlyISpec extends AuthMainAgentsOnlyISpec {
 
-  val callingApiVersion = "1.0"
+  val callingApiVersion = "2.0"
 
   val supportingAgentsNotAllowedEndpoint = "create-amend-foreign"
 
