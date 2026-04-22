@@ -112,19 +112,9 @@ class CreateAmendForeignValidatorSpec extends UnitSpec with MockForeignIncomeCon
       |       "amountTaxPaid":true
       |     },
       |     {
-      |       "countryCode":"GBR",
-      |       "amountInForeignCurrency":"99999999999.99",
-      |       "amountTaxPaid":false
-      |     },
-      |     {
       |       "countryCode":"ESP",
       |       "amountInForeignCurrency":"0.99",
       |       "amountTaxPaid":"100"
-      |     },
-      |     {
-      |       "countryCode":"YUG",
-      |       "amountInForeignCurrency":"99999999999.99",
-      |       "amountTaxPaid":"99999999999.99"
       |     }
       |   ]
       |}
@@ -316,8 +306,7 @@ class CreateAmendForeignValidatorSpec extends UnitSpec with MockForeignIncomeCon
             correlationId,
             RuleIncorrectOrEmptyBodyError.copy(paths = Some(
               List(
-                "/unremittableForeignIncome/0/amountTaxPaid",
-                "/unremittableForeignIncome/1/amountTaxPaid"
+                "/unremittableForeignIncome/0/amountTaxPaid"
               )))
           ))
       }
