@@ -20,7 +20,6 @@ import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import shared.models.errors.{CountryCodeFormatError, MtdError, RuleCountryCodeError}
 
-
 object ResolveParsedCountryCode {
 
   private[resolvers] val permittedCodes = Set(
