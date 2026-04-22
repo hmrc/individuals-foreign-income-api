@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class CreateAmendForeignValidatorSpec extends UnitSpec with MockForeignIncomeCon
       |       "amountTaxPaid":"0"
       |     },
       |     {
-      |       "countryCode":"GBR",
+      |       "countryCode":"DEU",
       |       "amountInForeignCurrency":"99999999999.99",
       |       "amountTaxPaid":"99999999999.99"
       |     },
@@ -61,7 +61,7 @@ class CreateAmendForeignValidatorSpec extends UnitSpec with MockForeignIncomeCon
 
   private val unremittableForeignIncome = List(
     UnremittableForeignIncomeItem("FRA", 0, Some(0)),
-    UnremittableForeignIncomeItem("GBR", 99999999999.99, Some(99999999999.99)),
+    UnremittableForeignIncomeItem("DEU", 99999999999.99, Some(99999999999.99)),
     UnremittableForeignIncomeItem("ESP", 0.99, Some(100.00))
   )
 
@@ -120,6 +120,11 @@ class CreateAmendForeignValidatorSpec extends UnitSpec with MockForeignIncomeCon
       |       "countryCode":"ESP",
       |       "amountInForeignCurrency":"0.99",
       |       "amountTaxPaid":"100"
+      |     },
+      |     {
+      |       "countryCode":"YUG",
+      |       "amountInForeignCurrency":"99999999999.99",
+      |       "amountTaxPaid":"99999999999.99"
       |     }
       |   ]
       |}
