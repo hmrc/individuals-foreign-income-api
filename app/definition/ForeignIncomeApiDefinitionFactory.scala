@@ -36,6 +36,7 @@ class ForeignIncomeApiDefinitionFactory @Inject() (protected val appConfig: AppC
           APIVersion(
             version = Version2,
             status = buildAPIStatus(Version2),
+            access = if (appConfig.controlledAccessEnabled) APIAccessType.CONTROLLED else APIAccessType.PUBLIC,
             endpointsEnabled = appConfig.endpointsEnabled(Version2)
           )
         ),

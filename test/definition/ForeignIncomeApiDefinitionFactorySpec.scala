@@ -19,7 +19,7 @@ package definition
 import api.config.Deprecation.NotDeprecated
 import api.config.MockAppConfig
 import api.definition.APIStatus.BETA
-import api.definition.{APIDefinition, APIVersion, Definition}
+import api.definition.{APIAccessType, APIDefinition, APIVersion, Definition}
 import api.routing.Version2
 import api.utils.UnitSpec
 import cats.implicits.catsSyntaxValidatedId
@@ -34,6 +34,7 @@ class ForeignIncomeApiDefinitionFactorySpec extends UnitSpec with MockAppConfig 
         MockedAppConfig.apiStatus(Version2) returns "BETA"
         MockedAppConfig.endpointsEnabled(Version2).returns(true).anyNumberOfTimes()
         MockedAppConfig.deprecationFor(Version2).returns(NotDeprecated.valid).anyNumberOfTimes()
+        MockedAppConfig.controlledAccessEnabled returns false
 
         val apiDefinitionFactory = new ForeignIncomeApiDefinitionFactory(mockAppConfig)
 
@@ -48,6 +49,7 @@ class ForeignIncomeApiDefinitionFactorySpec extends UnitSpec with MockAppConfig 
                 APIVersion(
                   Version2,
                   status = BETA,
+                  access = APIAccessType.PUBLIC,
                   endpointsEnabled = true
                 )
               ),

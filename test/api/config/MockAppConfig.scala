@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ trait MockAppConfig extends TestSuite with MockFactory {
     def endpointsEnabled(version: Version): CallHandler[Boolean] = (mockAppConfig.endpointsEnabled: Version => Boolean).expects(version)
     def deprecationFor(version: Version): CallHandler[Validated[String, Deprecation]] = (mockAppConfig.deprecationFor(_: Version)).expects(version)
     def apiDocumentationUrl(): CallHandler[String]                                    = (() => mockAppConfig.apiDocumentationUrl: String).expects()
+    def controlledAccessEnabled: CallHandler[Boolean]             = (() => mockAppConfig.controlledAccessEnabled).expects()
 
     def apiVersionReleasedInProduction(version: String): CallHandler[Boolean] =
       (mockAppConfig.apiVersionReleasedInProduction: String => Boolean).expects(version)
