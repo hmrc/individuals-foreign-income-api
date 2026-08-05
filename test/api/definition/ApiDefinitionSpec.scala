@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import play.api.libs.json.{JsValue, Json}
 
 class ApiDefinitionSpec extends UnitSpec {
 
-  private val apiVersion: APIVersion       = APIVersion(Version3, APIStatus.ALPHA, endpointsEnabled = true)
+  private val apiVersion: APIVersion       = APIVersion(Version3, APIStatus.ALPHA, APIAccessType.PUBLIC, endpointsEnabled = true)
   private val apiDefinition: APIDefinition = APIDefinition("b", "c", "d", List("category"), List(apiVersion), Some(false))
   private val definition                   = Definition(apiDefinition)
 
@@ -30,6 +30,7 @@ class ApiDefinitionSpec extends UnitSpec {
        |{
        | "version": "3.0",
        |"status": "ALPHA",
+       |"access": "PUBLIC",
        |"endpointsEnabled": true
        |}
        |""".stripMargin)
