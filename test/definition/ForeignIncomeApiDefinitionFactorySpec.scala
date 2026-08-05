@@ -60,4 +60,41 @@ class ForeignIncomeApiDefinitionFactorySpec extends UnitSpec with MockAppConfig 
     }
   }
 
+  "ForeignIncomeApiDefinitionFactory" when {
+
+    "the access level is set" when {
+      "the controlled access flag is enabled" should {
+        "return CONTROLLED" in {
+
+          MockedAppConfig.apiGatewayContext returns "individuals/foreign-income"
+          MockedAppConfig.endpointsEnabled(Version2)
+          MockedAppConfig.apiStatus(Version2) returns "BETA"
+          MockedAppConfig.deprecationFor(Version2).returns(NotDeprecated.valid).anyNumberOfTimes()
+
+          MockedAppConfig.controlledAccessEnabled returns true
+
+          val definition: Definition = new ForeignIncomeApiDefinitionFactory(mockAppConfig).definition
+
+          definition.api.versions.head.access shouldBe APIAccessType.CONTROLLED
+        }
+      }
+
+      "the controlled access flag is disabled" should {
+        "return PUBLIC" in {
+
+          MockedAppConfig.apiGatewayContext returns "individuals/foreign-income"
+          MockedAppConfig.endpointsEnabled(Version2)
+          MockedAppConfig.apiStatus(Version2) returns "BETA"
+          MockedAppConfig.deprecationFor(Version2).returns(NotDeprecated.valid).anyNumberOfTimes()
+
+          MockedAppConfig.controlledAccessEnabled returns false
+
+          val definition: Definition = new ForeignIncomeApiDefinitionFactory(mockAppConfig).definition
+
+          definition.api.versions.head.access shouldBe APIAccessType.PUBLIC
+        }
+      }
+    }
+  }
+
 }

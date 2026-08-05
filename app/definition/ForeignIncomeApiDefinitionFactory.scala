@@ -19,6 +19,7 @@ package definition
 import api.config.AppConfig
 import api.definition.*
 import api.routing.Version2
+import api.definition.APIAccessType.{CONTROLLED, PUBLIC}
 
 import javax.inject.{Inject, Singleton}
 
@@ -36,7 +37,7 @@ class ForeignIncomeApiDefinitionFactory @Inject() (protected val appConfig: AppC
           APIVersion(
             version = Version2,
             status = buildAPIStatus(Version2),
-            access = if (appConfig.controlledAccessEnabled) APIAccessType.CONTROLLED else APIAccessType.PUBLIC,
+            access = if (appConfig.controlledAccessEnabled) CONTROLLED else PUBLIC,
             endpointsEnabled = appConfig.endpointsEnabled(Version2)
           )
         ),

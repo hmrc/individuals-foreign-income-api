@@ -43,7 +43,7 @@ trait MockAppConfig extends TestSuite with MockFactory {
     def endpointsEnabled(version: Version): CallHandler[Boolean] = (mockAppConfig.endpointsEnabled: Version => Boolean).expects(version)
     def deprecationFor(version: Version): CallHandler[Validated[String, Deprecation]] = (mockAppConfig.deprecationFor(_: Version)).expects(version)
     def apiDocumentationUrl(): CallHandler[String]                                    = (() => mockAppConfig.apiDocumentationUrl: String).expects()
-    def controlledAccessEnabled: CallHandler[Boolean]             = (() => mockAppConfig.controlledAccessEnabled).expects()
+    def controlledAccessEnabled: CallHandler[Boolean]                                 = (() => mockAppConfig.controlledAccessEnabled).expects()
 
     def apiVersionReleasedInProduction(version: String): CallHandler[Boolean] =
       (mockAppConfig.apiVersionReleasedInProduction: String => Boolean).expects(version)
