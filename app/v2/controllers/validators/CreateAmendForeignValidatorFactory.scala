@@ -17,7 +17,7 @@
 package v2.controllers.validators
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino, ResolveNonEmptyJsonObject}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -39,7 +39,7 @@ class CreateAmendForeignValidatorFactory @Inject() (implicit foreignIncomeConfig
     def validate: Validated[Seq[MtdError], CreateAmendForeignRequest] =
       (
         ResolveNino(nino),
-        ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minTaxYear)).apply(taxYear),
+        ResolveDetailedTaxYear(minimumTaxYear = TaxYear.fromDownstreamInt(minTaxYear)).apply(taxYear),
         resolveJson(body)
       ).mapN((resolvedNino, resolvedTaxYear, resolvedBody) =>
         CreateAmendForeignRequest(resolvedNino, resolvedTaxYear, resolvedBody)) andThen validateBusinessRules
