@@ -17,7 +17,7 @@
 package v2.controllers.validators
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -36,7 +36,7 @@ class RetrieveForeignValidatorFactory @Inject() (implicit foreignIncomeConfig: F
     def validate: Validated[Seq[MtdError], RetrieveForeignRequest] =
       (
         ResolveNino(nino),
-        ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minTaxYear)).apply(taxYear)
+        ResolveDetailedTaxYear(minimumTaxYear = TaxYear.fromDownstreamInt(minTaxYear)).apply(taxYear)
       ).mapN(RetrieveForeignRequest.apply)
 
   }

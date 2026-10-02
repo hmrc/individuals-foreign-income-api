@@ -18,7 +18,14 @@ package v2.controllers.validators
 
 import api.controllers.validators.Validator
 import api.models.domain.{Nino, TaxYear}
-import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
+import api.models.errors.{
+  BadRequestError,
+  ErrorWrapper,
+  NinoFormatError,
+  RuleTaxYearNotSupportedError,
+  RuleTaxYearRangeInvalidError,
+  TaxYearFormatError
+}
 import api.utils.UnitSpec
 import config.{ForeignIncomeConfig, MockForeignIncomeConfig}
 import v2.models.request.delete.DeleteForeignRequest
@@ -51,7 +58,6 @@ class DeleteForeignValidatorFactorySpec extends UnitSpec {
   "parse" should {
     "return a request object" when {
       "valid request data is supplied" in new Test {
-
         val result = validator(validNino, validTaxYear).validateAndWrapResult()
         result shouldBe Right(DeleteForeignRequest(Nino(validNino), TaxYear.fromMtd(validTaxYear)))
       }
@@ -60,8 +66,28 @@ class DeleteForeignValidatorFactorySpec extends UnitSpec {
     "return an ErrorWrapper" when {
       "a single validation error occurs" in new Test {
         val result = validator(s"x$validNino", validTaxYear).validateAndWrapResult()
-        result shouldBe
-          Left(ErrorWrapper(correlationId, NinoFormatError))
+        result shouldBe Left(ErrorWrapper(correlationId, NinoFormatError))
+      }
+
+      "return TaxYearFormatError error" when {
+        "an invalid tax year is supplied" in new Test {
+          val result = validator(validNino, "20178").validateAndWrapResult()
+          result shouldBe Left(ErrorWrapper(correlationId, TaxYearFormatError))
+        }
+      }
+
+      "return RuleTaxYearRangeInvalidError error" when {
+        "an invalid tax year range is supplied" in new Test {
+          val result = validator(validNino, "2019-21").validateAndWrapResult()
+          result shouldBe Left(ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError))
+        }
+      }
+
+      "return RuleTaxYearNotSupportedError error" when {
+        "an unsupported tax year is supplied" in new Test {
+          val result = validator(validNino, "2017-18").validateAndWrapResult()
+          result shouldBe Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))
+        }
       }
 
       "multiple validation errors occur" in new Test {

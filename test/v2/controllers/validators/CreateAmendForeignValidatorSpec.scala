@@ -294,8 +294,15 @@ class CreateAmendForeignValidatorSpec extends UnitSpec with MockForeignIncomeCon
       }
     }
 
+    "return RuleTaxYearRangeInvalidError error" when {
+      "an invalid tax year range is supplied" in new Test {
+        val result: Either[ErrorWrapper, CreateAmendForeignRequest] = validator(validNino, "2018-20", validRequestBodyJson).validateAndWrapResult()
+        result shouldBe Left(ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError))
+      }
+    }
+
     "return RuleTaxYearNotSupported error" when {
-      "an invalid tax year is supplied" in new Test {
+      "an unsupported tax year is supplied" in new Test {
         val result: Either[ErrorWrapper, CreateAmendForeignRequest] = validator(validNino, "2017-18", validRequestBodyJson).validateAndWrapResult()
         result shouldBe Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))
       }

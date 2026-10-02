@@ -73,7 +73,7 @@ class RetrieveForeignValidatorFactorySpec extends UnitSpec {
     }
 
     "return RuleTaxYearNotSupportedError error" when {
-      "an invalid tax year is supplied" in new Test {
+      "an unsupported tax year is supplied" in new Test {
         val result = validator(validNino, "2018-19").validateAndWrapResult()
         result shouldBe Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))
       }
