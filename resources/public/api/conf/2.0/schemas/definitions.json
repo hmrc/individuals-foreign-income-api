@@ -29,9 +29,9 @@
     },
     "unremittableForeignIncome": {
       "type": "array",
+      "description": "Financial details about unremittable foreign income",
       "items": {
         "type": "object",
-        "description": "Financial details about unremittable foreign income",
         "properties": {
           "countryCode": {
             "type": "string",
